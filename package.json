@@ -15,11 +15,14 @@
 		"@sveltejs/adapter-auto": "^1.0.0-next.90",
 		"@sveltejs/kit": "^1.0.0-next.587",
 		"@tsconfig/svelte": "^3.0.0",
+		"autoprefixer": "^10.4.13",
+		"postcss": "^8.4.21",
 		"prettier": "^2.8.0",
 		"prettier-plugin-svelte": "^2.8.1",
 		"svelte": "^3.54.0",
 		"svelte-check": "^2.10.3",
 		"svelte-preprocess": "^5.0.1",
+		"tailwindcss": "^3.2.4",
 		"tslib": "^2.4.1",
 		"typescript": "^4.9.4",
 		"vite": "^4.0.0"
@@ -27,6 +30,7 @@
 	"type": "module",
 	"dependencies": {
 		"bitset": "^5.1.1",
+		"daisyui": "^2.47.0",
 		"svelte-canvas": "^0.8.1"
 	}
 }

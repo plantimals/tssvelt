@@ -10,11 +10,13 @@ export class Automaton {
     rule: number;
     mask: number[];
     paused: boolean;
+    lines: number;
 
     constructor(pubkey: string) {
         this.pubkey = pubkey;
         this.size = 256;
-        this.rule = 129;
+        this.rule = 30;
+        this.lines = 1;
         this.bits =  new BitSet("0x"+pubkey);
         this.mask = this.initMask();
         this.paused = false;
@@ -29,7 +31,13 @@ export class Automaton {
     }
 
     update(): void {
-        this.bits = this.newRow();
+        let n = this.newRow();
+        if (!this.bits.equals(n)) {
+            this.lines++;
+            this.bits = n;
+        } else {
+            this.pause();
+        }
     }
 
     newRow(): BitSet {
@@ -76,19 +84,23 @@ export class Automaton {
         if (this.paused){
             return;
         }
-        ctx.drawImage(ctx.canvas,0,1)
+        ctx.drawImage(ctx.canvas,0,2)
         ctx.fillStyle = 'white';
-        ctx.fillRect(0,0,256,1);
+        ctx.fillRect(0,0,512,2);
         this.update();
-        this.bits.toArray().forEach((value, index) => {
-            ctx.fillStyle = value != 0 ? 'black' : 'white';
-            ctx.fillRect(value, 0, 1, 1);
+        ctx.fillStyle = 'black';
+        this.bits.toArray().forEach((index, value) => {
+            ctx.fillRect(index * 2, 0, 2, 2);
         })
         
         //ctx.resetTransform();
     }
     getHex():string {
         return this.bits.toString(16);
+    }
+
+    getLines():number{
+        return this.lines;
     }
 
     pause():void {
