@@ -4,11 +4,12 @@ import { type Readable } from 'stream';
 
 
 export class Automaton {
-    size = 256;
+    size: number;
     bits: BitSet;
     pubkey: string;
     rule: number;
     mask: number[];
+    paused: boolean;
 
     constructor(pubkey: string) {
         this.pubkey = pubkey;
@@ -16,9 +17,10 @@ export class Automaton {
         this.rule = 129;
         this.bits =  new BitSet("0x"+pubkey);
         this.mask = this.initMask();
+        this.paused = false;
     }
 
-    initMask() {
+    initMask(): number[] {
         let msk = [];
         for (var i = 0; i < 8; i++) {
             msk.push(Math.pow(2, i));
@@ -26,12 +28,12 @@ export class Automaton {
         return msk;
     }
 
-    update() {
+    update(): void {
         this.bits = this.newRow();
     }
 
-    newRow() {
-        let row = new BitSet(256);   
+    newRow(): BitSet {
+        let row = new BitSet(this.size);   
         for (var i = 0; i < this.size; i++) {
             row.set(i, this.getCell(i));
         }
@@ -40,35 +42,56 @@ export class Automaton {
 
     getCell(i: number): number {
         let idx = 0;
+
+        // find left neighbor
         if (i==0) {
             if (this.bits.get(this.size - 1))
                 idx+=1;
         } else {
-            if (this.bits.get((i - 1) % this.size)) {
+            if (this.bits.get(i - 1)) {
                 idx += 1;
             }
         }
-        if (this.bits.get(i % this.size)) {
+
+        //find self
+        if (this.bits.get(i)) {
             idx += 2;
         }
+
+        //find right neighbor
         if (i == (this.size - 1)) {
             if (this.bits.get(0)) {
                 idx += 4;
             }
         } else {
-            if (this.bits.get((i + 1) % this.size)) {
+            if (this.bits.get(i + 1)) {
                 idx += 4;
             }
         }
         return (this.rule & this.mask[idx]) ? 1 : 0;
     }
 
-    draw(ctx: CanvasRenderingContext2D, t: any) {
-        console.log("running in draw")
+    draw(ctx: CanvasRenderingContext2D):void {
+        //ctx.drawImage(ctx.canvas,0,0,this.size,49,0,1,this.size,49);
+        if (this.paused){
+            return;
+        }
+        ctx.drawImage(ctx.canvas,0,1)
+        ctx.fillStyle = 'white';
+        ctx.fillRect(0,0,256,1);
         this.update();
         this.bits.toArray().forEach((value, index) => {
-            ctx.fillStyle = index != 0 ? 'black' : 'white';
-            ctx.fillRect(value, 0, 1, this.size);
+            ctx.fillStyle = value != 0 ? 'black' : 'white';
+            ctx.fillRect(value, 0, 1, 1);
         })
+        
+        //ctx.resetTransform();
+    }
+    getHex():string {
+        return this.bits.toString(16);
+    }
+
+    pause():void {
+        this.paused = !this.paused;
     }
 }
