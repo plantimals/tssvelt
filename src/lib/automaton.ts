@@ -116,4 +116,7 @@ export class Automaton {
             this.rule = rule;
         }
     }
+    reset(pubkey: string) {
+        
+    }
 }

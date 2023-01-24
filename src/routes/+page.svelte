@@ -17,6 +17,8 @@
     let x: Unsubscriber;
     let lines = 0;
     $: render = ({ context, width, height }) => {
+        context.fillStyle = 'white';
+        context.fillRect(0,0,context.canvas.getBoundingClientRect().width, context.canvas.getBoundingClientRect().height);
         x = t.subscribe((value: number) =>{
             a.draw(context);
             hex = a.getHex();
@@ -25,7 +27,7 @@
     };
 
     function reset() {
-        a = new Automaton(pubkey);
+        a.reset(pubkey);
     }
 
     function pause() {
@@ -58,13 +60,8 @@
     </Canvas>
 </div>
 <div class="card w-2/3 p-10 content-center justify-center">
+    <button class="btn" on:click={pause}>pause</button>
     <button class="btn" on:click={reset}>reset</button>
-    <div >
-        <label class="label cursor-pointer">
-            <span class="label-text">pause</span> 
-            <input type="checkbox" class="toggle" on:click={pause}/>
-        </label>
-    </div>
 </div>
 
 <div class="w-1/2">
