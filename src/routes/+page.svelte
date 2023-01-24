@@ -2,6 +2,8 @@
     import { type Render, Canvas, Layer, t } from 'svelte-canvas';
     import { Automaton } from '$lib/automaton'
 	import type { Unsubscriber } from 'svelte/store';
+    import { browser } from '$app/environment'
+
 
 
     let init = "dd81a8bacbab0b5c3007d1672fb8301383b4e9583d431835985057223eb298a5";
@@ -29,6 +31,24 @@
     function pause() {
         a.pause();
     }
+
+    if (browser) {
+        document.onkeydown = (event: KeyboardEvent) => {
+            if (event.key !== 'undefined') {
+                switch (event.key) {
+                    case " ": {
+                        a.pause();
+                    }
+                    case "ArrowLeft": {
+                        a.setRule((a.getRule()-1)%256);
+                    }
+                    case "ArrowRight": {
+                        a.setRule((a.getRule()+1)%256);
+                    }
+                }
+            } 
+        }
+    } 
         
 </script>
 

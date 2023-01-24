@@ -15,7 +15,7 @@ export class Automaton {
     constructor(pubkey: string) {
         this.pubkey = pubkey;
         this.size = 256;
-        this.rule = 30;
+        this.rule = 129;
         this.lines = 1;
         this.bits =  new BitSet("0x"+pubkey);
         this.mask = this.initMask();
@@ -103,7 +103,17 @@ export class Automaton {
         return this.lines;
     }
 
-    pause():void {
+    pause(): void {
         this.paused = !this.paused;
+    }
+
+    getRule(): number {
+        return this.rule;
+    }
+
+    setRule(rule: number): void {
+        if (rule >= 0 && rule < 256) {
+            this.rule = rule;
+        }
     }
 }
