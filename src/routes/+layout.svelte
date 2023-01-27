@@ -11,6 +11,7 @@
                     <!-- <img src="/images/drss-icon-3.svg" alt="drss logo" width="64px"> -->
                     <span class="pl-4 font-semibold text-6xl tracking-tight">DRSS</span>
                 </div>
+                <a href="/avatar">avatar</a>
             </a>
         </nav>
     </header>

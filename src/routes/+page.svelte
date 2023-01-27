@@ -3,15 +3,12 @@
     import { Automaton } from '$lib/automaton'
     import { browser } from '$app/environment'
 
-    let rule: number
-
-
     let init = "dd81a8bacbab0b5c3007d1672fb8301383b4e9583d431835985057223eb298a5";
     let pubkey = init;
 
     let a = new Automaton(pubkey);
 
-    rule = a.getRule();
+    let rule = a.getRule();
 
     let render: Render;
     let hex = pubkey;
@@ -40,6 +37,10 @@
                 switch (event.key) {
                     case " ": {
                         a.pause();
+                    }
+                    case "r": {
+                        console.log("calling r")
+                        a.reset();
                     }
                     case "ArrowLeft": {
                         a.setRule((a.getRule()-1)%256);
