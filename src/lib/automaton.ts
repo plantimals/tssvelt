@@ -1,8 +1,7 @@
 import { BitSet } from 'bitset';
-import { type Render, Canvas, Layer, t} from 'svelte-canvas';
-import { type Readable } from 'stream';
 
-
+// Automaton is a 1-D cellular automaton
+//
 export class Automaton {
     size: number;
     bits: BitSet;
@@ -10,6 +9,7 @@ export class Automaton {
     rule: number;
     mask: number[];
     paused: boolean;
+    resetCanvas: boolean;
     lines: number;
 
     constructor(pubkey: string) {
@@ -20,7 +20,18 @@ export class Automaton {
         this.bits =  new BitSet("0x"+pubkey);
         this.mask = this.initMask();
         this.paused = false;
+        this.resetCanvas = true;
     }
+
+    reset() {
+        this.size = 256;
+        this.rule = 129;
+        this.lines = 1;
+        this.bits =  new BitSet("0x"+this.pubkey);
+        this.paused = true;
+        this.resetCanvas = true;
+    }
+
 
     initMask(): number[] {
         let msk = [];
@@ -81,6 +92,11 @@ export class Automaton {
 
     draw(ctx: CanvasRenderingContext2D):void {
         //ctx.drawImage(ctx.canvas,0,0,this.size,49,0,1,this.size,49);
+        if (this.resetCanvas) {
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0,0,512,512);
+            this.resetCanvas = false;
+        }
         if (this.paused){
             return;
         }
@@ -115,8 +131,5 @@ export class Automaton {
         if (rule >= 0 && rule < 256) {
             this.rule = rule;
         }
-    }
-    reset(pubkey: string) {
-        
     }
 }

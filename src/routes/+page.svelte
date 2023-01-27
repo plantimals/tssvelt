@@ -1,9 +1,9 @@
 <script lang="ts">
     import { type Render, Canvas, Layer, t } from 'svelte-canvas';
     import { Automaton } from '$lib/automaton'
-	import type { Unsubscriber } from 'svelte/store';
     import { browser } from '$app/environment'
 
+    let rule: number
 
 
     let init = "dd81a8bacbab0b5c3007d1672fb8301383b4e9583d431835985057223eb298a5";
@@ -11,15 +11,15 @@
 
     let a = new Automaton(pubkey);
 
+    rule = a.getRule();
+
     let render: Render;
     let hex = pubkey;
-    let tval = 0;
-    let x: Unsubscriber;
     let lines = 0;
-    $: render = ({ context, width, height }) => {
+    $: render = ({ context }) => {
         context.fillStyle = 'white';
         context.fillRect(0,0,context.canvas.getBoundingClientRect().width, context.canvas.getBoundingClientRect().height);
-        x = t.subscribe((value: number) =>{
+        t.subscribe(() =>{
             a.draw(context);
             hex = a.getHex();
             lines = a.getLines();
@@ -27,7 +27,7 @@
     };
 
     function reset() {
-        a.reset(pubkey);
+        a.reset();
     }
 
     function pause() {
