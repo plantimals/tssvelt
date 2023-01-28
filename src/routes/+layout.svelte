@@ -9,7 +9,7 @@
             <a href="/">
                 <div class="flex items-center flex-no-shrink mr-6">
                     <!-- <img src="/images/drss-icon-3.svg" alt="drss logo" width="64px"> -->
-                    <span class="pl-4 font-semibold text-6xl tracking-tight">DRSS</span>
+                    <span class="pl-4 font-semibold text-6xl tracking-tight">BUILDTALL</span>
                 </div>
                 <a href="/avatar">avatar</a>
             </a>
@@ -20,7 +20,7 @@
     </main>
     <footer class="text-xs">
         <div class="text-center">
-            "keep circulating the tapes"
+            "momento profundum"
         </div>
     </footer>
 </body>
